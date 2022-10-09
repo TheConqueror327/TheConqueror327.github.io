@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erdőhelyi Márk</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="hdr">
+        <img class="logo" src="sg.png" title="Az intézmény címere">
+        <nav>
+          <ul class="nav_links">
+            <div class="nav_school_links">
+              <div class="wavy">
+                <li><a href="index.html">
+                  <span style="--i:1">F</span>
+                  <span style="--i:2">ő</span>
+                  <span style="--i:3">o</span>
+                  <span style="--i:4">l</span>
+                  <span style="--i:5">d</span>
+                  <span style="--i:6">a</span>
+                  <span style="--i:7">l</span>
+                </a></li>
+                <li><a href="http://www.gyakg.u-szeged.hu/sagvari/" target="_blank">
+                  <span style="--i:8">I</span>
+                  <span style="--i:9">s</span>
+                  <span style="--i:10">k</span>
+                  <span style="--i:11">o</span>
+                  <span style="--i:12">l</span>
+                  <span style="--i:13">á</span>
+                  <span style="--i:14">m</span>
+                  <span style="--i:15"> </span>
+                  <span style="--i:16">h</span>
+                  <span style="--i:17">o</span>
+                  <span style="--i:18">n</span>
+                  <span style="--i:19">l</span>
+                  <span style="--i:20">a</span>
+                  <span style="--i:21">p</span>
+                  <span style="--i:22">j</span>
+                  <span style="--i:23">a</span>
+                </a></li>
+              </div>
+            </div>
+            <div class="icons">
+              <li><a href="https://www.facebook.com" target="_blank"><img src="fb_icon6.png" class="icon"></a></li>
+              <li><a href="https://mail.google.com/mail/u/0/#inbox" target="_blank"><img src="gmail-icon.png" class="icon"></a></li>
+              <li><a href="https://discord.com/channels/@me" target="_blank"><img src="discord_icon.png" class="icon"></a></li>
+              <li><a href="https://github.com/TheConqueror327" target="_blank"><img src="github_logo.svg" class="icon" ></a></li>
+            </div>
+          </ul>
+        </nav>      
+      <a class="cta" href="myTimetable.html"><button>Órarendem</button></a>
+    </header>
+    <main>
+      <p id="state">Start</p>
+      <table id="game"></table>
+      <button id="start" onclick="start()">Re:</button>
+      <input id="player1" type="text"></input>
+      <input id="player2" type="text"></input>
+    </main>
+  </body>
+  <script>
+    get = id => document.getElementById(id)
+Nai = (length, func) => Array(length).fill().map(func)
+const Fills = {
+    Def: "rgb(247, 231, 195)",
+    Blue: "rgb(130, 190, 214)",
+    Red: "rgb(221, 46, 68)"
+}
+const Heading = {
+    Up: 0,
+    Right: 1,
+    Down: 2,
+    Left: 3,
+};
+class Table {
+    constructor(row, col) {
+        this.row = row;
+        this.col = col;
+        this.notes = Nai(row, (_, i) => {return Nai(col, (_, j) => {return {
+                    fill: Fills.Def,
+                    row: i,
+                    col: j
+                }
+            })
+        })
+    }
+    display() {
+        var code = "";
+        this.notes.forEach(row => {
+            code += "<tr>"
+            row.forEach(elem => {
+                code += `<td id="${elem.row}${elem.col}" style="background-color:${elem.fill};">`
+                code += "</td>"
+            })
+            code += "</tr>"
+        })
+        get("game").innerHTML = code;
+    }
+    colorIn(row, col, fill) {
+        if (this.notes[row][col].fill != Fills.Def) {
+            return true
+        } 
+        this.notes[row][col].fill = fill;
+    }
+}
+class Player {
+    constructor(name, x, y, heading, table, fill, controls=["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"]) {
+        this.name = name;
+        this.y = y;
+        this.x = x;
+        this.heading = heading;
+        this.table = table;
+        this.fill = fill;
+        this.controls = controls;
+        table.colorIn(y, x, fill)
+    }
+    update() {
+        [_ => {--this.y < 0 && stopper(this)},
+         _ => {++this.x >= this.table.col && stopper(this)},
+         _ => {++this.y >= this.table.row && stopper(this)},
+         _ => {--this.x < 0 && stopper(this)}
+        ][this.heading]();
+        if (!stop) {
+            if (this.table.colorIn(this.y, this.x, this.fill)) {
+                stopper(this);
+            }
+        }
+    }
+}
+
+function start() {
+    stop = 0;
+    var game = new Table(100, 100)
+    var player1 = new Player(get("player1").value, 0, 25, Heading.Right, game, Fills.Blue, ["w", "d", "s", "a"])
+    var player2 = new Player(get("player2").value, 99, 25, Heading.Left, game, Fills.Red)
+    var players = [player1, player2];
+
+    get("state").style.color = Fills.Def;
+    get("state").innerHTML = "Ongoing"
+
+    window.addEventListener("keydown", event => {
+        players.forEach(player => {
+            var head = player.heading;
+            var s = player.controls.indexOf(event.key)
+            if ((s + 2) % 4 != head && [0, 1, 2, 3].includes(s)) {
+                player.heading = s;
+            }
+        })
+    })
+
+    updater = setInterval(() => {
+        player1.update()
+        game.display()
+        player2.update()
+        
+    }, 50)
+}
+function stopper(player) {
+    stop++;
+    get("state").style.color = player.fill;
+    get("state").innerHTML = player.name + " has died..."
+    clearInterval(updater);
+}
+  </script>
+  <style>
+#state {
+    color:rgb(247, 231, 195);
+    text-shadow: 1px 1px 3px rgb(41, 42, 45);
+}
+input {
+    border: none;
+    background-color: rgb(67, 63, 52);
+    box-shadow: 1px 1px 3px rgb(41, 42, 45);
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+#player1 {
+    color:rgb(130, 190, 214);
+}
+#player2 {
+    color:rgb(221, 46, 68);
+}
+table{
+    border-collapse: collapse;
+    border-spacing:0;
+}
+td {
+    width: 10px;
+    height: 10px;
+    background-color: rgb(247, 231, 195);
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: center;
+    color: rgb(51, 51, 51);
+    user-select: none;
+}
+#start {
+    border: none;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(67, 63, 52);
+    box-shadow: 1px 1px 3px rgb(41, 42, 45);
+    cursor: pointer;
+    text-align: center;
+    color:rgb(247, 231, 195);
+    margin-top: 10px;
+}
+:start:hover {
+    background-color: rgb(247, 231, 195);
+}
+  </style>
+</html>
