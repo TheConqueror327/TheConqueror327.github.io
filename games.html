@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erdőhelyi Márk</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="hdr">
+        <img class="logo" src="sg.png" title="Az intézmény címere">
+        <nav>
+          <ul class="nav_links">
+            <div class="nav_school_links">
+              <div class="wavy">
+                <li><a href="index.html">
+                  <span style="--i:1">F</span>
+                  <span style="--i:2">ő</span>
+                  <span style="--i:3">o</span>
+                  <span style="--i:4">l</span>
+                  <span style="--i:5">d</span>
+                  <span style="--i:6">a</span>
+                  <span style="--i:7">l</span>
+                </a></li>
+                <li><a href="http://www.gyakg.u-szeged.hu/sagvari/" target="_blank">
+                  <span style="--i:8">I</span>
+                  <span style="--i:9">s</span>
+                  <span style="--i:10">k</span>
+                  <span style="--i:11">o</span>
+                  <span style="--i:12">l</span>
+                  <span style="--i:13">á</span>
+                  <span style="--i:14">m</span>
+                  <span style="--i:15"> </span>
+                  <span style="--i:16">h</span>
+                  <span style="--i:17">o</span>
+                  <span style="--i:18">n</span>
+                  <span style="--i:19">l</span>
+                  <span style="--i:20">a</span>
+                  <span style="--i:21">p</span>
+                  <span style="--i:22">j</span>
+                  <span style="--i:23">a</span>
+                </a></li>
+              </div>
+            </div>
+            <div class="icons">
+              <li><a href="https://www.facebook.com" target="_blank"><img src="fb_icon6.png" class="icon"></a></li>
+              <li><a href="https://mail.google.com/mail/u/0/#inbox" target="_blank"><img src="gmail-icon.png" class="icon"></a></li>
+              <li><a href="https://discord.com/channels/@me" target="_blank"><img src="discord_icon.png" class="icon"></a></li>
+              <li><a href="https://github.com/TheConqueror327" target="_blank"><img src="github_logo.svg" class="icon" ></a></li>
+            </div>
+          </ul>
+        </nav>      
+      <a class="cta" href="myTimetable.html"><button>Órarendem</button></a>
+    </header>
+    <div class="game-buttons">
+        <button class="cta" onclick="showById('amoba')">Amőba</button>
+        <button class="cta" id="reset" onclick="resetAmoba()" style="display: none;">Lenullázás</button>
+    </div>
+    <div id="amoba" style="display: none;"></div>
+  </body>
+  <script>
+        nx = "O", n = 16
+        f = e => { if (e.innerHTML == "") {
+        nx = nx == "O" ? "X" : "O"
+        e.innerHTML = nx, e.setAttribute('class', nx)
+        x = e.cellIndex, y = e.parentElement.rowIndex, amoba[x][y] = nx
+        setTimeout(() => [[1,1],[1,0],[0,1],[-1,1]].forEach( d => {
+            xp=x, yp=y, maxh=0, [vx, vy] = d
+            while (amoba[xp][yp] === nx) xp += vx, yp += vy, maxh++
+            xp=x, yp=y
+            while (amoba[xp][yp] === nx) xp -= vx, yp -= vy, maxh++
+            if (maxh > 5) alert(`Nyert: ${nx}`), init()
+        }), 100)
+        }}
+        (init = () => {
+        amoba = Array(n).fill().map(() => Array(n).fill())
+        document.getElementById('amoba').innerHTML = `
+        <table>
+            ${Array(n).fill(`
+            <tr>
+            ${Array(n).fill(`<td onmouseup="f(this)" />`).join('')}
+            </tr>
+            `).join('')}
+        </table>`
+        })()
+
+        function showById(id) {
+            var showId = document.getElementById(id);
+            var reset = document.getElementById("reset");
+            if (window.getComputedStyle(showId).display === "none") {
+                showId.style.display = "block";
+                reset.style.display = "block";
+            } else {
+                showId.style.display = "none";
+                reset.style.display = "none";
+            }
+        }
+
+        function resetAmoba() {
+            document.getElementById('amoba').innerHTML = `
+            <table>
+                ${Array(n).fill(`
+                <tr>
+                ${Array(n).fill(`<td onmouseup="f(this)" />`).join('')}
+                </tr>
+                `).join('')}
+            </table>`
+        }
+
+    </script>
+    <style>
+        td {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 20px;
+            user-select: none;
+        }
+        
+        table {
+            margin: auto;
+            background-image: linear-gradient(45deg, #dbb4df, #70e6c6);
+            font-family: arial;
+            border-radius: 7px;
+            cursor: pointer;
+            max-height: 100%;
+        }
+
+        .game-buttons {
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        #reset {
+            margin-top: 10px;
+        }
+    </style>
+</html>
