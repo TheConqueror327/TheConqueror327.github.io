@@ -54,8 +54,17 @@
       <a class="cta" href="myTimetable.html"><button>Órarendem</button></a>
     </header>
     <div class="game-buttons">
-        <button class="cta" onclick="showById('amoba')">Amőba</button>
+        <button class="cta" onclick="showAmoba()">Amőba</button>
         <button class="cta" id="reset" onclick="resetAmoba()" style="display: none;">Lenullázás</button>
+    </div>
+    <div id="sde">
+        <input type="text" id="a" class="abc" placeholder="a"> x<sup>2</sup> + <input type="text" id="b" class="abc" placeholder="b"> x + <input type="text" id="c" class="abc" placeholder="c"> = 0<br><br>
+        <button class="cta"  id="szamol" onclick="szamol()">Számol</button>
+        <button class="cta"  id="torol" onclick="torol()">Töröl</button>
+        <button class="cta" id="reset-sde" onclick="reset()">Reset</button>
+        <p id="output"></p>
+        <p id="x1"></p>
+        <p id="x2"></p>
     </div>
     <div id="amoba" style="display: none;"></div>
   </body>
@@ -85,7 +94,7 @@
         </table>`
         })()
 
-        function showById(id) {
+        function showAmoba() {
             var showId = document.getElementById(id);
             var reset = document.getElementById("reset");
             if (window.getComputedStyle(showId).display === "none") {
@@ -107,7 +116,57 @@
                 `).join('')}
             </table>`
         }
+        
+        function szamol() {
+            let a, b, c, x1, x2, d
+            a = document.getElementById("a").value;
+            b = document.getElementById("b").value;
+            c = document.getElementById("c").value;
+            d = ((b ** 2) - (4 * a * c))
+            if (a !== 0) {
+                if (d < 0) {
+                    document.getElementById("output").innerHTML = "Az egyenlet diszkriminánsa negatív.";
+                    document.getElementById("x1").innerHTML = "";
+                    document.getElementById("x2").innerHTML = "";
+                }
+                if (d == 0) {
+                    document.getElementById("output").innerHTML = (-1 *b) / (2 * a);
+                    document.getElementById("x1").innerHTML = "";
+                    document.getElementById("x2").innerHTML = "";
+                }
+                if (d > 0) {    
+                    x1 = ((-1 * b) + (((b ** 2) - 4 * a * c) ** 0.5)) / ( 2 * a);
+                    x2 = ((-1 * b) - (((b ** 2) - 4 * a * c) ** 0.5)) / ( 2 * a);
+                    document.getElementById("output").innerHTML = "";
+                    document.getElementById("x1").innerHTML = (`x<sub>1</sub> = ${x1}`);
+                    document.getElementById("x2").innerHTML = (`x<sub>2</sub> = ${x2}`);
+                }
+            }
+        }
 
+        function torol() {
+            document.getElementById("output").innerHTML = "";
+            document.getElementById("x1").innerHTML = "";
+            document.getElementById("x2").innerHTML = "";
+        }
+
+        function reset() {
+            document.getElementById("a").value = "";
+            document.getElementById("b").value = "";
+            document.getElementById("c").value = "";
+        }
+		
+				function showSde() {
+						var showId = document.getElementById("sde");
+						document.getElementById("output").innerHTML = "";
+						document.getElementById("x1").innerHTML = "";
+            document.getElementById("x2").innerHTML = "";
+            if (window.getComputedStyle(showId).display === "none") {
+                showId.style.display = "block";
+            } else {
+                showId.style.display = "none";
+            }
+				}
     </script>
     <style>
         td {
@@ -135,6 +194,20 @@
 
         #reset {
             margin-top: 10px;
+        }
+        
+      	#sde {
+						display: none;
+						width: 400px;
+						height: 300px;
+						background-image: linear-gradient(45deg, #dbb4df, #70e6c6);
+						margin-left: 20px;
+            margin-top: 20px;
+						padding: 20px;
+				}
+      	
+        .abc {
+            width: 15px;
         }
     </style>
 </html>
