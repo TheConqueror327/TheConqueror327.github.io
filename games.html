@@ -156,17 +156,17 @@
             document.getElementById("c").value = "";
         }
 		
-				function showSde() {
-						var showId = document.getElementById("sde");
-						document.getElementById("output").innerHTML = "";
-						document.getElementById("x1").innerHTML = "";
+	function showSde() {
+	    var showId = document.getElementById("sde");
+	    document.getElementById("output").innerHTML = "";
+	    document.getElementById("x1").innerHTML = "";
             document.getElementById("x2").innerHTML = "";
             if (window.getComputedStyle(showId).display === "none") {
                 showId.style.display = "block";
             } else {
                 showId.style.display = "none";
             }
-				}
+	}
     </script>
     <style>
         td {
@@ -197,7 +197,7 @@
         }
         
       	#sde {
-	display: none;
+	    display: none;
 	    width: 400px;
 	    height: 300px;
 	    background-image: linear-gradient(45deg, #dbb4df, #70e6c6);
