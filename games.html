@@ -56,7 +56,7 @@
     <div class="game-buttons">
         <button class="cta" onclick="showAmoba()">Amőba</button>
         <button class="cta" id="reset" onclick="resetAmoba()" style="display: none;">Lenullázás</button>
-	<button class="cta" id="sde-btn" onclick="showSde()">Lenullázás</button>
+	<button class="cta" id="sde-btn" onclick="showSde()">Másodfokú egyenlet megoldó</button>
     </div>
     <div id="sde">
         <input type="text" id="a" class="abc" placeholder="a"> x<sup>2</sup> + <input type="text" id="b" class="abc" placeholder="b"> x + <input type="text" id="c" class="abc" placeholder="c"> = 0<br><br>
@@ -96,13 +96,13 @@
         })()
 
         function showAmoba() {
-            var showId = document.getElementById(id);
             var reset = document.getElementById("reset");
-            if (window.getComputedStyle(showId).display === "none") {
-                showId.style.display = "block";
+	    var amoba = document.getElementById("amoba");
+            if (window.getComputedStyle(amoba).display === "none") {
+                amoba.style.display = "block";
                 reset.style.display = "block";
             } else {
-                showId.style.display = "none";
+                amoba.style.display = "none";
                 reset.style.display = "none";
             }
         }
@@ -193,7 +193,7 @@
             margin-top: 20px;
         }
 
-        #reset {
+        #reset, #torol, #reset-sde, #sde-btn {
             margin-top: 10px;
         }
         
@@ -202,6 +202,7 @@
 	    width: 400px;
 	    height: 300px;
 	    background-image: linear-gradient(45deg, #dbb4df, #70e6c6);
+	    border-radius: 7px;
 	    margin-left: 20px;
             margin-top: 20px;
 	    padding: 20px;
