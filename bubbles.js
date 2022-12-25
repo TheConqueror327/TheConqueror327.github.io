@@ -13,7 +13,7 @@ function getRandomColor(li) {
 
 function start() {
     lis = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 10; i++) {
         lis.push(new createObject(Math.random() * 1000 + 20, Math.random() * 700 + 20, Math.random() * 35 + 5, Math.ceil(Math.random() * 20) * (Math.round(Math.random()) ? 1 : -1), Math.ceil(Math.random() * 20) * (Math.round(Math.random()) ? 1 : -1), getRandomColor(colors)));
     }
     game.start();
