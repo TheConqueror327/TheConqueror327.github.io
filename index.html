@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erdőhelyi Márk</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
   </head>
   <body>
     <header class="hdr">
@@ -71,9 +72,13 @@
               <li><a href="https://github.com/TheConqueror327" target="_blank"><img src="github_logo.svg" class="icon" ></a></li>
             </div>
           </ul>
-        </nav>      
+        </nav>
       <a class="cta" href="myTimetable.html"><button>Órarendem</button></a>
     </header>
+    <ul id="news">
+      <li class="new">Új!</li>
+      <li class="new_text"><a href="./bubble_simulation.html" target="_blank">Buborék szimuláció</a></li>
+    </ul>
     <div id="box">
       <div class="slider">
         <div class="slides">
@@ -129,7 +134,7 @@
       setInterval(function(){
         document.getElementById('radio' + counter).checked = true;
         counter += increment;
-        if((counter == 4) | (counter == 1)){
+        if((counter == 4) || (counter == 1)){
           increment *= -1;
         }
       }, 4000);
